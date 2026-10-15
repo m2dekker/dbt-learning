@@ -1,0 +1,10 @@
+{
+  // Use the project's virtual environment, so extensions (dbt Power User) can find dbt
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+
+  // dbt SQL files contain Jinja; let dbt Power User handle them
+  "files.associations": {
+    "*.sql": "jinja-sql"
+  }
+}

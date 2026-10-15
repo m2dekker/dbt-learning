@@ -30,13 +30,13 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 
 **Phase B — Staging layer**
 - [x] 4. Sources: `_sources.yml`, `source()` vs `ref()`, folder/naming conventions
-- [ ] 5. Staging models `stg_<source>__<entity>` (rename/cast/clean only) ✍️
+- [x] 5. Staging models `stg_<source>__<entity>` (rename/cast/clean only) ✍️
       Hand-write the first ones, then generate the rest with `dbt-codegen` (as on customer projects).
 - [ ] 6. Generic tests + schema.yml docs; read failures, fix data issues ❓
 - [ ] 6b. Side quest — CI as code: GitHub Actions runs `dbt build` on PRs; pre-commit + SQLFluff
 
 **Phase C — Business logic**
-- [ ] 7. Packages: dbt_utils (`generate_surrogate_key`, `unique_combination_of_columns`)
+- [ ] 7. Packages (installed early in step 5: dbt_utils 1.4.1, codegen 0.14.1 — still to use): dbt_utils (`generate_surrogate_key`, `unique_combination_of_columns`)
 - [ ] 8. Intermediate models `int_` (joins, aggregation)
 - [ ] 9. Marts `dim_customers`, `fct_orders`; view vs table materializations ✍️ ❓
 - [ ] 10. Incremental model (`is_incremental()`, `unique_key`, `--full-refresh`, incremental strategies incl. microbatch 🎓)
@@ -71,6 +71,10 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 - Staging: `stg_<source>__<entities>.sql`, materialized as view (folder default). CTE pattern: `source` → `renamed` → (`deduplicated`) → `select *`. Keys renamed to `<entity>_id`. Columns grouped by ids / strings / numerics / booleans / timestamps.
 - Only the key carries the entity prefix (`customer_id`); other columns stay plain (`email`, not `customer_email`).
 - Dedupe versioned rows with `order by updated_at desc` (keep latest).
+- Generic attribute names (`name`, `status`, `category`, `type`) DO get the entity prefix (`product_name`, `order_status`) — ambiguous after joins / reserved words.
+- Timestamps named `<event>_at` (`ordered_at`, `paid_at`). Amounts stay in cents in staging until the cents_to_dollars macro (step 11).
+- Packages: `packages.yml` uses version ranges; `package-lock.yml` is committed. Generate staging drafts with
+  `dbt run-operation codegen.generate_base_model --args '{"source_name": "shop", "table_name": "raw_x"}'`, then hand-finish.
 - Fabric note: DuckDB `qualify` is not valid T-SQL → use CTE + `where rn = 1`.
 
 ## Concepts Mike struggled with
@@ -81,4 +85,4 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 - "Transform" ≠ staging: staging = one table, row-level, no joins/aggregations/business logic.
 
 ## Session log
-- 2026-10-15: Environment checked (installed python3.12-venv). Completed steps 1–4. Created private GitHub repo. Added IaC side quests (6b, Phase E Terraform).
+- 2026-10-15: Environment checked (installed python3.12-venv). Completed steps 1–5. Fixed dbt Power User 'dbt not found' via .vscode/settings.json interpreter path. Created private GitHub repo. Added IaC side quests (6b, Phase E Terraform).

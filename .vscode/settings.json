@@ -6,5 +6,6 @@
   // dbt SQL files contain Jinja; let dbt Power User handle them
   "files.associations": {
     "*.sql": "jinja-sql"
-  }
+  },
+  "python.terminal.useEnvFile": true
 }

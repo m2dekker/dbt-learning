@@ -68,6 +68,8 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 - Amounts in raw data are integer cents.
 - Staging grouped by source system: `models/staging/<source>/`; source YAML named `_<source>__sources.yml`. Source name = `shop`.
 - Only staging models call `source()`; everything downstream uses `ref()`.
+- Staging: `stg_<source>__<entities>.sql`, materialized as view (folder default). CTE pattern: `source` → `renamed` → (`deduplicated`) → `select *`. Keys renamed to `<entity>_id`. Columns grouped by ids / strings / numerics / booleans / timestamps.
+- Fabric note: DuckDB `qualify` is not valid T-SQL → use CTE + `where rn = 1`.
 
 ## Concepts Mike struggled with
 - Custom schema naming (`main` + `raw` → `main_raw`, developer isolation). Revisit `generate_schema_name` in Fabric phase.

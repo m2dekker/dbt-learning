@@ -26,3 +26,5 @@ seeds:
 # Folder-level defaults are added here as we create each layer
 models:
   shop_analytics:
+    staging:
+      +materialized: view

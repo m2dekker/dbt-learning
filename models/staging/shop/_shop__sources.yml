@@ -1,0 +1,17 @@
+sources:
+  - name: shop
+    description: >
+      Operational database of the webshop, loaded into the warehouse by an EL tool.
+      In this learning project the raw tables are dbt seeds.
+    schema: main_raw   # where the raw tables live; on another platform only this line changes
+    tables:
+      - name: raw_customers
+        description: One row per customer account (may contain duplicates).
+      - name: raw_products
+        description: Product catalogue with list prices in cents.
+      - name: raw_orders
+        description: One row per order placed in the webshop (may contain duplicates).
+      - name: raw_order_items
+        description: Line items belonging to an order.
+      - name: raw_payments
+        description: Payment transactions; an order can have several payments.

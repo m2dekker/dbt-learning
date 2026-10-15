@@ -43,7 +43,7 @@ PAYMENT_METHODS = ["credit_card"] * 4 + ["paypal"] * 2 + ["bank_transfer", "gift
 def write_csv(name, header, rows):
     path = SEEDS_DIR / f"{name}.csv"
     with path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, lineterminator="\n")
         writer.writerow(header)
         writer.writerows(rows)
     print(f"{path.name}: {len(rows)} rows")

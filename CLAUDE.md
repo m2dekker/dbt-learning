@@ -3,6 +3,10 @@
 Mike is learning dbt by building this project from scratch, with Claude as tutor.
 Read this file first when resuming a session.
 
+**Goals:** (1) use dbt on customer projects (consulting context), (2) pass the dbt Analytics
+Engineering Certification (targets dbt Core 1.11 since 2026-05-20; ~65 questions, 2h, 65% pass).
+Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam questions.
+
 ## How to teach (agreed working style)
 - One step at a time. Before each step: 2–4 sentences on what and why it matters in real projects.
 - Run setup commands myself, but show the command and explain it.
@@ -27,6 +31,7 @@ Read this file first when resuming a session.
 **Phase B — Staging layer**
 - [x] 4. Sources: `_sources.yml`, `source()` vs `ref()`, folder/naming conventions
 - [ ] 5. Staging models `stg_<source>__<entity>` (rename/cast/clean only) ✍️
+      Hand-write the first ones, then generate the rest with `dbt-codegen` (as on customer projects).
 - [ ] 6. Generic tests + schema.yml docs; read failures, fix data issues ❓
 - [ ] 6b. Side quest — CI as code: GitHub Actions runs `dbt build` on PRs; pre-commit + SQLFluff
 
@@ -34,14 +39,21 @@ Read this file first when resuming a session.
 - [ ] 7. Packages: dbt_utils (`generate_surrogate_key`, `unique_combination_of_columns`)
 - [ ] 8. Intermediate models `int_` (joins, aggregation)
 - [ ] 9. Marts `dim_customers`, `fct_orders`; view vs table materializations ✍️ ❓
-- [ ] 10. Incremental model (`is_incremental()`, `unique_key`, `--full-refresh`)
+- [ ] 10. Incremental model (`is_incremental()`, `unique_key`, `--full-refresh`, incremental strategies incl. microbatch 🎓)
 
 **Phase D — Advanced**
 - [ ] 11. A simple macro; inspect compiled SQL
 - [ ] 12. Singular (custom SQL) test ✍️
-- [ ] 13. Snapshot (SCD2 on customers) ❓
+- [ ] 13. Snapshot (SCD2 on customers, YAML-defined style 🎓) ❓
 - [ ] 14. `dbt build`, node selection, `dbt docs generate/serve`, lineage graph
 - [ ] 15. Review + final knowledge check
+
+**Phase D+ — Exam extras 🎓**
+- [ ] 16. Unit tests (YAML `unit_tests:`)
+- [ ] 17. Model governance: contracts, versions, access, groups
+- [ ] 18. dbt state: `state:modified+`, `--defer`, slim CI
+- [ ] 19. Short extras: `--empty` / `--sample`, grants, exposures, Python models
+- [ ] 20. Mixed exam-style practice questions
 
 **Phase E — Only when Mike asks**
 - [ ] Explain migrating to Microsoft Fabric (dbt-fabric adapter, profile, auth, DuckDB vs T-SQL)

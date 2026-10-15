@@ -1,0 +1,15 @@
+# Python virtual environment
+.venv/
+
+# dbt build artifacts (regenerated on every run)
+target/
+dbt_packages/
+logs/
+
+# Local DuckDB database files (rebuilt from seeds)
+*.duckdb
+*.duckdb.wal
+
+# Editor / OS noise
+__pycache__/
+.DS_Store

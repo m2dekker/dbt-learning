@@ -32,7 +32,7 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 - [x] 4. Sources: `_sources.yml`, `source()` vs `ref()`, folder/naming conventions
 - [x] 5. Staging models `stg_<source>__<entity>` (rename/cast/clean only) ✍️
       Hand-write the first ones, then generate the rest with `dbt-codegen` (as on customer projects).
-- [ ] 6. Generic tests + schema.yml docs; read failures, fix data issues ❓
+- [x] 6. Generic tests + schema.yml docs; read failures, fix data issues ❓
 - [ ] 6b. Side quest — CI as code: GitHub Actions runs `dbt build` on PRs; pre-commit + SQLFluff
 
 **Phase C — Business logic**
@@ -75,6 +75,11 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 - Timestamps named `<event>_at` (`ordered_at`, `paid_at`). Amounts stay in cents in staging until the cents_to_dollars macro (step 11).
 - Packages: `packages.yml` uses version ranges; `package-lock.yml` is committed. Generate staging drafts with
   `dbt run-operation codegen.generate_base_model --args '{"source_name": "shop", "table_name": "raw_x"}'`, then hand-finish.
+- Model docs/tests in `_<source>__models.yml` per folder; use `data_tests:` + `arguments:` (dbt 1.10+ style).
+- Data-quality policy: known, meaningful source issues → keep rows, `severity: warn` + `store_failures: true`
+  (failing rows land in `main_dbt_test__audit`, shareable with source owner). Money columns use thresholds
+  (`warn_if: ">0"`, `error_if: ">10"`). Zero-quantity lines to be filtered in intermediate layer.
+- Known planted issues: order 150 → customer 999; order line 77 null product_id; line 200 qty 0; payments 60 & 180 null amount.
 - Fabric note: DuckDB `qualify` is not valid T-SQL → use CTE + `where rn = 1`.
 
 ## Concepts Mike struggled with
@@ -82,7 +87,9 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 - Step 5 review of stg_shop__customers: single vs double underscore in model name; copied instead of moved
   file (→ duplicate model); trim placed on wrong column; country codes lowered instead of ISO upper;
   `order by` without `desc`. Also: dbt never drops orphaned objects after rename/delete.
+- Step 6: accepted_values typo (spaces vs underscores, missing value) — profile distinct values first with `dbt show --inline`.
+  Test names sanitise spaces → trust compiled SQL. Data-quality handling: tended to one-size-fits-all; differentiate by risk.
 - "Transform" ≠ staging: staging = one table, row-level, no joins/aggregations/business logic.
 
 ## Session log
-- 2026-10-15: Environment checked (installed python3.12-venv). Completed steps 1–5. Fixed dbt Power User 'dbt not found' via .vscode/settings.json interpreter path. Created private GitHub repo. Added IaC side quests (6b, Phase E Terraform).
+- 2026-10-15: Environment checked (installed python3.12-venv). Completed steps 1–6. Fixed dbt Power User 'dbt not found' via .vscode/settings.json interpreter path. Created private GitHub repo. Added IaC side quests (6b, Phase E Terraform).

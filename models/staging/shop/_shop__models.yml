@@ -41,6 +41,9 @@ models:
               arguments:
                 to: ref('stg_shop__customers')
                 field: customer_id
+              config:
+                severity: warn
+                store_failures: true
       - name: order_status
         description: Lifecycle status of the order, in lowercase.
         data_tests:
@@ -69,7 +72,10 @@ models:
       - name: product_id
         description: The product ordered on this line.
         data_tests:
-          - not_null
+          - not_null:
+              config:
+                severity: warn
+                store_failures: true
           - relationships:
               arguments:
                 to: ref('stg_shop__products')
@@ -80,6 +86,9 @@ models:
           - dbt_utils.accepted_range:
               arguments:
                 min_value: 1
+              config:
+                severity: warn
+                store_failures: true
       - name: unit_price_cents
         description: Price per unit at the time of ordering, in cents.
 
@@ -125,9 +134,13 @@ models:
               arguments:
                 values: ['credit_card', 'paypal', 'bank_transfer', 'gift_card']
       - name: amount_cents
-        description: Amount paid in cents.
+        description: Amount paid in cents. A handful of nulls is a known source issue; many means the loader broke.
         data_tests:
-          - not_null
+          - not_null:
+              config:
+                warn_if: ">0"
+                error_if: ">10"
+                store_failures: true
           - dbt_utils.accepted_range:
               arguments:
                 min_value: 0

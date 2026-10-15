@@ -13,3 +13,6 @@ logs/
 # Editor / OS noise
 __pycache__/
 .DS_Store
+
+# dbt anonymous usage-tracking id (machine-specific)
+.user.yml

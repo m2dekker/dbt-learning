@@ -91,5 +91,10 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
   Test names sanitise spaces → trust compiled SQL. Data-quality handling: tended to one-size-fits-all; differentiate by risk.
 - "Transform" ≠ staging: staging = one table, row-level, no joins/aggregations/business logic.
 
+## Next up (resume here)
+- Step 6b: CI as code — GitHub Actions workflow running `dbt build` on PRs, pre-commit + SQLFluff, first PR.
+- On resume: `source .venv/bin/activate`, then `dbt seed && dbt build` to recreate the local DuckDB if needed.
+
 ## Session log
 - 2026-10-15: Environment checked (installed python3.12-venv). Completed steps 1–6. Fixed dbt Power User 'dbt not found' via .vscode/settings.json interpreter path. Created private GitHub repo. Added IaC side quests (6b, Phase E Terraform).
+  Discussed `warn_if`/`error_if` semantics (count of test-query rows; absolute, not %; `fail_calc` for ratios).

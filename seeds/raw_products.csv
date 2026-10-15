@@ -1,0 +1,21 @@
+id,name,category,price_cents
+1,Wireless Mouse,Electronics,2499
+2,Mechanical Keyboard,Electronics,8999
+3,USB-C Hub,electronics,3999
+4,27in Monitor,Electronics,24999
+5,Noise Cancelling Headphones,Electronics,19999
+6,Webcam HD,Electronics,5999
+7,Desk Lamp,Home Office,3499
+8,Ergonomic Chair,Home Office,29999
+9,Standing Desk,Home Office,44999
+10,Monitor Arm,Home Office,7999
+11,Notebook A5,Stationery,799
+12,Gel Pens (10 pack),stationery,1299
+13,Sticky Notes,Stationery,499
+14,Desk Organizer,Stationery,1999
+15,Coffee Beans 1kg,Pantry,2299
+16,Green Tea (50 bags),Pantry,899
+17,Protein Bars (12),Pantry,2499
+18,Water Bottle,Lifestyle,1799
+19,Backpack,lifestyle,6999
+20,Laptop Sleeve,Lifestyle,2999

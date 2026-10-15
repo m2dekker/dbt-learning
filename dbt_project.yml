@@ -18,6 +18,11 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
+# Seeds stand in for raw data an EL tool would load; keep them in their own schema
+seeds:
+  shop_analytics:
+    +schema: raw
+
 # Folder-level defaults are added here as we create each layer
 models:
   shop_analytics:

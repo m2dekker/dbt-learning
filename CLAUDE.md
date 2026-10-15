@@ -69,10 +69,16 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 - Staging grouped by source system: `models/staging/<source>/`; source YAML named `_<source>__sources.yml`. Source name = `shop`.
 - Only staging models call `source()`; everything downstream uses `ref()`.
 - Staging: `stg_<source>__<entities>.sql`, materialized as view (folder default). CTE pattern: `source` → `renamed` → (`deduplicated`) → `select *`. Keys renamed to `<entity>_id`. Columns grouped by ids / strings / numerics / booleans / timestamps.
+- Only the key carries the entity prefix (`customer_id`); other columns stay plain (`email`, not `customer_email`).
+- Dedupe versioned rows with `order by updated_at desc` (keep latest).
 - Fabric note: DuckDB `qualify` is not valid T-SQL → use CTE + `where rn = 1`.
 
 ## Concepts Mike struggled with
 - Custom schema naming (`main` + `raw` → `main_raw`, developer isolation). Revisit `generate_schema_name` in Fabric phase.
+- Step 5 review of stg_shop__customers: single vs double underscore in model name; copied instead of moved
+  file (→ duplicate model); trim placed on wrong column; country codes lowered instead of ISO upper;
+  `order by` without `desc`. Also: dbt never drops orphaned objects after rename/delete.
+- "Transform" ≠ staging: staging = one table, row-level, no joins/aggregations/business logic.
 
 ## Session log
 - 2026-10-15: Environment checked (installed python3.12-venv). Completed steps 1–4. Created private GitHub repo. Added IaC side quests (6b, Phase E Terraform).

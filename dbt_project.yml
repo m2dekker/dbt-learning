@@ -1,0 +1,23 @@
+name: 'shop_analytics'
+version: '1.0.0'
+
+# Which entry in profiles.yml to use for the connection
+profile: 'shop_analytics'
+
+# Where dbt looks for each kind of resource
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+analysis-paths: ["analyses"]
+
+# Build output, removed by `dbt clean`
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# Folder-level defaults are added here as we create each layer
+models:
+  shop_analytics:

@@ -21,13 +21,14 @@ Read this file first when resuming a session.
 ## Learning plan
 **Phase A — Foundation**
 - [x] 1. Project skeleton: venv, dbt-core + dbt-duckdb, git init, .gitignore, CLAUDE.md
-- [ ] 2. dbt project + profile: dbt_project.yml, in-project profiles.yml, `dbt debug`
+- [x] 2. dbt project + profile: dbt_project.yml, in-project profiles.yml, `dbt debug`
 - [ ] 3. Seeds: generate CSVs with planted data-quality issues, `dbt seed`, explore ❓
 
 **Phase B — Staging layer**
 - [ ] 4. Sources: `_sources.yml`, `source()` vs `ref()`, folder/naming conventions
 - [ ] 5. Staging models `stg_<source>__<entity>` (rename/cast/clean only) ✍️
 - [ ] 6. Generic tests + schema.yml docs; read failures, fix data issues ❓
+- [ ] 6b. Side quest — CI as code: GitHub Actions runs `dbt build` on PRs; pre-commit + SQLFluff
 
 **Phase C — Business logic**
 - [ ] 7. Packages: dbt_utils (`generate_surrogate_key`, `unique_combination_of_columns`)
@@ -44,13 +45,16 @@ Read this file first when resuming a session.
 
 **Phase E — Only when Mike asks**
 - [ ] Explain migrating to Microsoft Fabric (dbt-fabric adapter, profile, auth, DuckDB vs T-SQL)
+- [ ] Side quest — Terraform for Fabric: workspace, warehouse, service principal, role assignments, Key Vault
 
 ## Conventions agreed
 - Python deps pinned in `requirements.txt`.
+- Git: private remote https://github.com/m2dekker/dbt-learning (branch `main`).
+  Claude commits + pushes at the end of each step ("Step N: ...").
 - Ignored by git: `.venv/`, `target/`, `dbt_packages/`, `logs/`, `*.duckdb`.
 
 ## Concepts Mike struggled with
 _(none yet)_
 
 ## Session log
-- 2026-10-15: Environment checked (installed python3.12-venv). Completed step 1.
+- 2026-10-15: Environment checked (installed python3.12-venv). Completed steps 1–2. Created private GitHub repo. Added IaC side quests (6b, Phase E Terraform).

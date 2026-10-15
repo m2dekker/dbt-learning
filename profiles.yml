@@ -1,0 +1,9 @@
+shop_analytics:          # must match `profile:` in dbt_project.yml
+  target: dev            # default target when you don't pass --target
+  outputs:
+    dev:
+      type: duckdb
+      # DuckDB database file, relative to where you run dbt (the project root).
+      # env_var() lets CI or a teammate override it without editing this file.
+      path: "{{ env_var('DBT_DUCKDB_PATH', 'shop_analytics.duckdb') }}"
+      threads: 4         # how many models dbt builds in parallel

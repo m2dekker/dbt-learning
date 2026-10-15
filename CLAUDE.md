@@ -56,7 +56,7 @@ Read this file first when resuming a session.
 - Amounts in raw data are integer cents.
 
 ## Concepts Mike struggled with
-_(none yet)_
+- Custom schema naming (`main` + `raw` → `main_raw`, developer isolation). Revisit `generate_schema_name` in Fabric phase.
 
 ## Session log
 - 2026-10-15: Environment checked (installed python3.12-venv). Completed steps 1–3. Created private GitHub repo. Added IaC side quests (6b, Phase E Terraform).

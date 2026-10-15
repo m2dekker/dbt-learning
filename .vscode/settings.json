@@ -7,5 +7,6 @@
   "files.associations": {
     "*.sql": "jinja-sql"
   },
-  "python.terminal.useEnvFile": true
+  "python.terminal.useEnvFile": true,
+  "dbt.perspectiveTheme": "Vintage"
 }

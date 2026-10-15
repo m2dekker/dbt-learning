@@ -1,0 +1,135 @@
+models:
+  - name: stg_shop__customers
+    description: One row per customer account, deduplicated and with standardised casing.
+    columns:
+      - name: customer_id
+        description: Primary key of the customer.
+        data_tests:
+          - unique
+          - not_null
+      - name: first_name
+        description: First name, whitespace trimmed.
+      - name: last_name
+        description: Last name, whitespace trimmed.
+      - name: email
+        description: Email address in lowercase. Optional in the webshop, so can be null.
+      - name: country_code
+        description: ISO 3166-1 alpha-2 country code (uppercase).
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['NL', 'BE', 'DE', 'FR', 'GB']
+      - name: created_at
+        description: When the customer account was created.
+      - name: updated_at
+        description: When the customer record was last changed.
+
+  - name: stg_shop__orders
+    description: One row per order placed in the webshop, deduplicated.
+    columns:
+      - name: order_id
+        description: Primary key of the order.
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: The customer who placed the order.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_shop__customers')
+                field: customer_id
+      - name: order_status
+        description: Lifecycle status of the order, in lowercase.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['placed', 'shipped', 'completed', 'returned']
+      - name: ordered_at
+        description: When the order was placed.
+
+  - name: stg_shop__order_items
+    description: One row per product line within an order.
+    columns:
+      - name: order_item_id
+        description: Primary key of the order line.
+        data_tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: The order this line belongs to.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_shop__orders')
+                field: order_id
+      - name: product_id
+        description: The product ordered on this line.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_shop__products')
+                field: product_id
+      - name: quantity
+        description: Number of units ordered; must be at least 1.
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 1
+      - name: unit_price_cents
+        description: Price per unit at the time of ordering, in cents.
+
+  - name: stg_shop__products
+    description: Product catalogue.
+    columns:
+      - name: product_id
+        description: Primary key of the product.
+        data_tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: Display name of the product.
+      - name: product_category
+        description: Product category in lowercase.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['electronics', 'home office', 'stationery', 'pantry', 'lifestyle']
+      - name: price_cents
+        description: Current list price in cents.
+
+  - name: stg_shop__payments
+    description: One row per payment made for an order.
+    columns:
+      - name: payment_id
+        description: Primary key of the payment.
+        data_tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: The order this payment belongs to.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_shop__orders')
+                field: order_id
+      - name: payment_method
+        description: Payment method used, in lowercase.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['credit_card', 'paypal', 'bank_transfer', 'gift_card']
+      - name: amount_cents
+        description: Amount paid in cents.
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+      - name: paid_at
+        description: When the payment was made.

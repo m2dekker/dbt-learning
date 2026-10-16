@@ -19,7 +19,7 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['NL', 'BE', 'DE', 'FR', 'GB']
+                values: ['NL', 'BE', 'DE', 'FR', 'ff']
       - name: created_at
         description: When the customer account was created.
       - name: updated_at

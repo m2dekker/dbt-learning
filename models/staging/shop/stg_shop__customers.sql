@@ -8,12 +8,12 @@ source as (
 
 renamed as (
 
-    select
+    SELECT
         -- ids
         cast(id as integer)                           as customer_id,
 
         -- strings
-        trim(first_name)                              as first_name,
+        trim(first_name)                                    as first_name,
         trim(last_name)                               as last_name,
         lower(email)                                  as email,
         cast(upper(trim(country_code)) as varchar(2)) as country_code,

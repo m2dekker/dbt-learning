@@ -55,6 +55,16 @@ models:
 
   - name: stg_shop__order_items
     description: One row per product line within an order.
+    data_tests:
+      # The source can put the same product on several lines of one order.
+      # Known behaviour (warn only); lines are merged in int_order_items_merged.
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - product_id
+          config:
+            severity: warn
     columns:
       - name: order_item_id
         description: Primary key of the order line.

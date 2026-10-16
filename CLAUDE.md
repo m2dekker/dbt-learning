@@ -36,8 +36,8 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 - [x] 6b. Side quest — CI as code: GitHub Actions runs `dbt build` on PRs; pre-commit + SQLFluff
 
 **Phase C — Business logic**
-- [ ] 7. Packages (installed early in step 5: dbt_utils 1.4.1, codegen 0.14.1 — still to use): dbt_utils (`generate_surrogate_key`, `unique_combination_of_columns`)
-- [ ] 8. Intermediate models `int_` (joins, aggregation)
+- [x] 7. Packages (dbt_utils 1.4.1, codegen 0.14.1): dbt_utils (`generate_surrogate_key`, `unique_combination_of_columns`)
+- [ ] 8. Intermediate models `int_` (joins, aggregation) — started: `int_order_items_merged`
 - [ ] 9. Marts `dim_customers`, `fct_orders`; view vs table materializations ✍️ ❓
 - [ ] 10. Incremental model (`is_incremental()`, `unique_key`, `--full-refresh`, incremental strategies incl. microbatch 🎓)
 
@@ -63,6 +63,7 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 - Python deps pinned in `requirements.txt`; dev tools (sqlfluff, pre-commit) in `requirements-dev.txt`.
 - SQL style enforced by SQLFluff (`.sqlfluff`: duckdb dialect, jinja templater, lowercase, aligned aliases, ST06 off)
   via pre-commit (`.pre-commit-config.yaml`). Auto-fix: `sqlfluff fix models/`.
+  Jinja templater does not know package macros → lint-only stubs in `sqlfluff_libs/` (e.g. `dbt_utils.py`); add a stub per new macro.
 - Git: PUBLIC repo https://github.com/m2dekker/dbt-learning (made public by Mike 2026-10-16).
 - `main` is branch-protected (both CI checks required, strict, enforce_admins, linear history, no force push).
   ALL changes go via branch + PR: `<type>/<desc>` branch (feat/, fix/, chore/, ci/, docs/) from up-to-date main,
@@ -86,6 +87,11 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
   (failing rows land in `main_dbt_test__audit`, shareable with source owner). Money columns use thresholds
   (`warn_if: ">0"`, `error_if: ">10"`). Zero-quantity lines to be filtered in intermediate layer.
 - Known planted issues: order 150 → customer 999; order line 77 null product_id; line 200 qty 0; payments 60 & 180 null amount.
+- Intermediate: `models/intermediate/<business area>/` (ours: `sales`), named `int_<entity>_<verb>`, view (folder default),
+  YAML `_int_<area>__models.yml`. Test each invariant in the layer where it must hold (warn in staging, strict downstream).
+- Grain without a natural key → `dbt_utils.generate_surrogate_key([...])` named `<grain>_key` (e.g. `order_product_key`).
+- Source can repeat a product within an order (24 pairs) → merged in `int_order_items_merged` (sum qty AND amount).
+- After aggregations, reconcile row counts and money totals.
 - Fabric note: DuckDB `qualify` is not valid T-SQL → use CTE + `where rn = 1`.
 
 ## Concepts Mike struggled with
@@ -100,7 +106,7 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 - "Transform" ≠ staging: staging = one table, row-level, no joins/aggregations/business logic.
 
 ## Next up (resume here)
-- Step 7: packages — use dbt_utils (`generate_surrogate_key`, `unique_combination_of_columns`), then step 8 intermediate models.
+- Step 8: more intermediate models — payments per order, order-level aggregation joining orders + items + payments.
 - On resume: `source .venv/bin/activate`, then `dbt seed && dbt build` to recreate the local DuckDB if needed.
 
 ## Session log

@@ -1,0 +1,38 @@
+models:
+  - name: int_order_items_merged
+    description: >
+      One row per order and product. Source lines for the same product within an order
+      are merged (quantities and amounts summed); lines with quantity 0 are dropped.
+    data_tests:
+      # strict here: merging guarantees one row per order + product
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - product_id
+    columns:
+      - name: order_product_key
+        description: Surrogate key, hash of order_id + product_id.
+        data_tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: The order.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_shop__orders')
+                field: order_id
+      - name: product_id
+        description: The product; null when the source line had no product (known source issue).
+      - name: quantity
+        description: Total units of this product in the order.
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 1
+      - name: line_amount_cents
+        description: Sum of quantity × unit price over the merged source lines, in cents.
+      - name: source_line_count
+        description: Number of source lines merged into this row (1 = no duplicates in source).

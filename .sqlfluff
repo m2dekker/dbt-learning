@@ -8,6 +8,8 @@ exclude_rules = ST06
 
 [sqlfluff:templater:jinja]
 apply_dbt_builtins = True
+# lint-only stubs for package macros (e.g. dbt_utils.*); see sqlfluff_libs/
+library_path = sqlfluff_libs
 
 [sqlfluff:indentation]
 tab_space_size = 4

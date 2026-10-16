@@ -10,17 +10,17 @@ renamed as (
 
     select
         -- ids
-        cast(id as integer)             as customer_id,
+        cast(id as integer)                           as customer_id,
 
         -- strings
-        trim(first_name)                      as first_name,
-        trim(last_name)                       as last_name,
-        lower(email)                    as email,
-        cast(upper(trim(country_code)) as varchar(2))                    as country_code,
+        trim(first_name)                              as first_name,
+        trim(last_name)                               as last_name,
+        lower(email)                                  as email,
+        cast(upper(trim(country_code)) as varchar(2)) as country_code,
 
         -- timestamps
-        cast(created_at as timestamp) as created_at,
-        cast(updated_at as timestamp) as updated_at
+        cast(created_at as timestamp)                 as created_at,
+        cast(updated_at as timestamp)                 as updated_at
 
     from source
 

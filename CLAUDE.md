@@ -60,7 +60,9 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 - [ ] Side quest — Terraform for Fabric: workspace, warehouse, service principal, role assignments, Key Vault
 
 ## Conventions agreed
-- Python deps pinned in `requirements.txt`.
+- Python deps pinned in `requirements.txt`; dev tools (sqlfluff, pre-commit) in `requirements-dev.txt`.
+- SQL style enforced by SQLFluff (`.sqlfluff`: duckdb dialect, jinja templater, lowercase, aligned aliases, ST06 off)
+  via pre-commit (`.pre-commit-config.yaml`). Auto-fix: `sqlfluff fix models/`.
 - Git: private remote https://github.com/m2dekker/dbt-learning (branch `main`).
   Claude commits + pushes at the end of each step ("Step N: ...").
 - Ignored by git: `.venv/`, `target/`, `dbt_packages/`, `logs/`, `*.duckdb`.
@@ -92,7 +94,8 @@ Tag exam-relevant points with 🎓 while teaching. Never use leaked/dump exam qu
 - "Transform" ≠ staging: staging = one table, row-level, no joins/aggregations/business logic.
 
 ## Next up (resume here)
-- Step 6b: CI as code — GitHub Actions workflow running `dbt build` on PRs, pre-commit + SQLFluff, first PR.
+- Step 6b part 2: GitHub Actions workflow running `dbt build` + SQLFluff on PRs; first PR on a feature branch.
+  (Part 1 done 2026-10-16: SQLFluff + pre-commit installed and passing.)
 - On resume: `source .venv/bin/activate`, then `dbt seed && dbt build` to recreate the local DuckDB if needed.
 
 ## Session log

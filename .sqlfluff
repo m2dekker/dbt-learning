@@ -1,0 +1,37 @@
+[sqlfluff]
+dialect = duckdb
+# The jinja templater renders {{ ref() }} / {{ source() }} without a database
+# connection, which keeps linting fast and runnable anywhere (pre-commit, CI).
+templater = jinja
+max_line_length = 120
+exclude_rules = ST06
+
+[sqlfluff:templater:jinja]
+apply_dbt_builtins = True
+
+[sqlfluff:indentation]
+tab_space_size = 4
+
+# Our convention: aliases aligned within a select clause
+[sqlfluff:layout:type:alias_expression]
+spacing_before = align
+align_within = select_clause
+align_scope = bracketed
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.literals]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.types]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:aliasing.table]
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.column]
+aliasing = explicit

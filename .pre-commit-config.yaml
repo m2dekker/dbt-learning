@@ -1,0 +1,19 @@
+# Runs on every `git commit`. Install the git hook once with: pre-commit install
+# Run manually on everything with: pre-commit run --all-files
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+
+  - repo: https://github.com/sqlfluff/sqlfluff
+    rev: 4.4.0           # keep in sync with requirements-dev.txt
+    hooks:
+      - id: sqlfluff-lint
+        files: ^models/
+      - id: sqlfluff-fix
+        files: ^models/
+        stages: [manual] # opt-in: pre-commit run sqlfluff-fix --hook-stage manual --all-files

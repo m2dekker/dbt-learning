@@ -54,8 +54,14 @@ jobs:
       - name: Install dbt packages
         run: dbt deps
 
-      - name: Build and test everything
-        run: dbt build
+      # Seeds stand in for raw data that an EL tool loads BEFORE dbt runs.
+      # Models read them via source(), which has no dependency on the seed nodes,
+      # so they must be loaded in a separate step first (otherwise: race condition).
+      - name: Load raw data (stand-in for the EL tool)
+        run: dbt seed
+
+      - name: Build and test models
+        run: dbt build --exclude "resource_type:seed"
 
       - name: Upload dbt artifacts
         if: always()
